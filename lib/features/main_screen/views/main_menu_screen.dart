@@ -40,12 +40,12 @@ class MainMenuScreen extends StatelessWidget {
               height: 50,
             ),
             CustomButton(
-                title: 'Join Room', onPressed: () => joinRoom(context)),
+                title: 'Create Room', onPressed: () => createRoom(context)),
             const SizedBox(
               height: 16,
             ),
             CustomButton(
-                title: 'Create Room', onPressed: () => createRoom(context)),
+                title: 'Join Room', onPressed: () => joinRoom(context)),
           ],
         ),
       ),
