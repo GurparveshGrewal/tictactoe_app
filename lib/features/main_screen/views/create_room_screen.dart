@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tictactoe_app/resources/socket/socket_methods.dart';
+import 'package:tictactoe_app/utils/commons/widgets/custom_button.dart';
 import 'package:tictactoe_app/utils/commons/widgets/custom_text.dart';
 import 'package:tictactoe_app/utils/commons/widgets/custom_textfield.dart';
 
@@ -12,6 +14,7 @@ class CreateRoomScreen extends StatefulWidget {
 
 class _CreateRoomScreenState extends State<CreateRoomScreen> {
   final TextEditingController _roomCodeController = TextEditingController();
+  final SocketMethods _socketMethods = SocketMethods();
 
   @override
   void dispose() {
@@ -58,7 +61,18 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
             CustomTextField(
               hintText: 'enter your nickname',
               controller: _roomCodeController,
-            )
+            ),
+            SizedBox(
+              height: height * 0.05,
+            ),
+            CustomButton(
+                title: 'Create',
+                onPressed: () {
+                  final roomName = _roomCodeController.text.trim();
+                  if (roomName.isNotEmpty) {
+                    _socketMethods.createRoom(roomName);
+                  }
+                }),
           ],
         ),
       ),
