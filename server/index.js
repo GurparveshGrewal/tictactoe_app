@@ -3,6 +3,9 @@ const express =  require("express");
 const http =  require("http");
 const mongoose = require("mongoose");
 
+// models
+const Room = require('./models/room');
+
 const app = express();
 const port = process.env.PORT || 3000;
 var server =  http.createServer(app);
@@ -16,8 +19,32 @@ const DB = "mongodb+srv://gurparvesh:grewal@cluster-fluttertictacto.xm9hojz.mong
 
 io.on("connection", (socket) => {
     console.log("socket connected");
-    socket.on("createRoom", ({ nickname }) => {
+    socket.on("createRoom", async ({ nickname }) => {
         console.log(nickname);
+        // room creation 
+       try{ let room  = new Room();
+        let player = {
+            socketId : socket.id,
+            nickname,
+            playerType : 'X',
+        };
+        room.players.push(player);
+        room.turn = player;
+
+        // saving room at MongoDB
+        room = await room.save();
+
+        const roomId = room._id.toString();
+
+        // our socket will join to specific room 
+        socket.join(roomId);
+
+        // io sends data to everyone
+        // whereas socket sends data to yourself
+        io.to(roomId).emit("createRoomSuccess", room);
+    }catch(e){
+            console.log(e);
+        }
     } );
 });
 
