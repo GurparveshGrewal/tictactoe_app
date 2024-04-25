@@ -15,7 +15,7 @@ var io =  require("socket.io")(server);
 //middleware 
 app.use(express.json());
 
-const DB = "mongodb+srv://gurparvesh:grewal@cluster-fluttertictacto.xm9hojz.mongodb.net/?retryWrites=true&w=majority&appName=Cluster-FlutterTictactoe";
+const DB = "mongodb+srv://gurparvesh:grewal@cluster-fluttertictacto.xm9hojz.mongodb.net/mySecondDatabase?retryWrites=true&w=majority&appName=Cluster-FlutterTictactoe";
 
 io.on("connection", (socket) => {
     console.log("socket connected");

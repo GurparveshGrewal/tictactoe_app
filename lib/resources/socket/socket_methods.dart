@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+import 'package:tictactoe_app/features/game_screen/views/game_screen.dart';
 import 'package:tictactoe_app/resources/socket/socket_client.dart';
 
 class SocketMethods {
@@ -9,5 +11,11 @@ class SocketMethods {
         'nickname': nickname,
       });
     }
+  }
+
+  void createRoomSuccessListener(BuildContext context) {
+    _socketClient.on('createRoomSuccess', (room) {
+      Navigator.of(context).pushNamed(GameStartScreen.routeName);
+    });
   }
 }
