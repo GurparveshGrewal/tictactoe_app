@@ -57,4 +57,11 @@ class SocketMethods {
       showSnackbar(context, data);
     });
   }
+
+  void updateRoomListener(BuildContext context) {
+    _socketClient.on('updateRoom', (room) {
+      Provider.of<RoomDataProvider>(context, listen: false)
+          .updateRoomData(room);
+    });
+  }
 }
