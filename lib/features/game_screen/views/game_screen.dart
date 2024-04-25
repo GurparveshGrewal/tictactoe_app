@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:tictactoe_app/provider/room_data_provider.dart';
 
 class GameStartScreen extends StatefulWidget {
   static String routeName = '/game-start-page';
@@ -11,8 +13,10 @@ class GameStartScreen extends StatefulWidget {
 class _GameStartScreenState extends State<GameStartScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Game to be started'),
+    return Scaffold(
+      body: Center(
+        child: Text(Provider.of<RoomDataProvider>(context).roomData.toString()),
+      ),
     );
   }
 }
