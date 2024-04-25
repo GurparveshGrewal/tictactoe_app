@@ -22,7 +22,7 @@ io.on("connection", (socket) => {
     socket.on("createRoom", async ({ nickname }) => {
         console.log(nickname);
         // room creation 
-       try{ let room  = new Room();
+        try{ let room  = new Room();
         let player = {
             socketId : socket.id,
             nickname,
@@ -46,6 +46,33 @@ io.on("connection", (socket) => {
             console.log(e);
         }
     } );
+    socket.on("joinRoom",  async ({ nickname, roomId }) => {
+        try{
+            if(!roomId.match(/^[0-9a-fA-F]{24}$/)){
+                socket.emit('errorOccured', 'please enter a valid room id');
+                return;
+            }
+            let room  =  await Room.findById(roomId);
+
+            if(room.isJoin){
+                let player = {
+                    nickname,
+                    socketId : socket.id,
+                    playerType : '0', 
+                }
+
+                socket.join(roomId);
+                room.players.push(player);
+                room = await room.save();
+                io.to(roomId).emit("joinRoomSuccess", room);
+            }else{
+                socket.emit('errorOccurred','The game is in progress, try again later');
+            }
+        }
+        catch (e){
+            console.log(e);
+        }
+    });
 });
 
 mongoose.connect(DB).then(()=> {

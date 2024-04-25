@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tictactoe_app/resources/socket/socket_methods.dart';
+import 'package:tictactoe_app/utils/commons/widgets/custom_button.dart';
 import 'package:tictactoe_app/utils/commons/widgets/custom_text.dart';
 import 'package:tictactoe_app/utils/commons/widgets/custom_textfield.dart';
 
@@ -13,6 +15,14 @@ class JoinRoomScreen extends StatefulWidget {
 class _JoinRoomScreenState extends State<JoinRoomScreen> {
   final TextEditingController _roomCodeController = TextEditingController();
   final TextEditingController _nameCodeController = TextEditingController();
+  final SocketMethods _socketMethods = SocketMethods();
+
+  @override
+  void initState() {
+    super.initState();
+    _socketMethods.joinRoomSuccessListener(context);
+    _socketMethods.errorOccurredListener(context);
+  }
 
   @override
   void dispose() {
@@ -67,7 +77,19 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
             CustomTextField(
               hintText: 'enter the room code',
               controller: _roomCodeController,
-            )
+            ),
+            SizedBox(
+              height: height * 0.05,
+            ),
+            CustomButton(
+                title: 'Join',
+                onPressed: () {
+                  final roomCode = _roomCodeController.text.trim();
+                  final nickName = _nameCodeController.text.trim();
+                  if (roomCode.isNotEmpty && nickName.isNotEmpty) {
+                    _socketMethods.joinRoom(nickName, roomCode);
+                  }
+                }),
           ],
         ),
       ),
