@@ -43,6 +43,15 @@ class SocketMethods {
     });
   }
 
+  void updatePlayersListener(BuildContext context) {
+    _socketClient.on('updatePlayers', (players) {
+      Provider.of<RoomDataProvider>(context, listen: false)
+          .updatePlayer1(players[0]);
+      Provider.of<RoomDataProvider>(context, listen: false)
+          .updatePlayer2(players[1]);
+    });
+  }
+
   void errorOccurredListener(BuildContext context) {
     _socketClient.on('errorOccurred', (data) {
       showSnackbar(context, data);

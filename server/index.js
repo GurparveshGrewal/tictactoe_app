@@ -52,6 +52,7 @@ io.on("connection", (socket) => {
                 socket.emit('errorOccured', 'please enter a valid room id');
                 return;
             }
+            
             let room  =  await Room.findById(roomId);
 
             if(room.isJoin){
@@ -63,10 +64,13 @@ io.on("connection", (socket) => {
 
                 socket.join(roomId);
                 room.players.push(player);
+                room.isJoin = false;
                 room = await room.save();
                 io.to(roomId).emit("joinRoomSuccess", room);
+                io.to(roomId).emit("updatePlayers", room.players);
             }else{
                 socket.emit('errorOccurred','The game is in progress, try again later');
+                return;
             }
         }
         catch (e){
