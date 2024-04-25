@@ -17,6 +17,12 @@ class _CreateRoomScreenState extends State<CreateRoomScreen> {
   final SocketMethods _socketMethods = SocketMethods();
 
   @override
+  void initState() {
+    super.initState();
+    _socketMethods.createRoomSuccessListener(context);
+  }
+
+  @override
   void dispose() {
     _roomCodeController.dispose();
     super.dispose();
