@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:socket_io_client/socket_io_client.dart';
 import 'package:tictactoe_app/features/game_screen/views/game_screen.dart';
 import 'package:tictactoe_app/provider/room_data_provider.dart';
 import 'package:tictactoe_app/resources/socket/socket_client.dart';
@@ -7,6 +8,8 @@ import 'package:tictactoe_app/utils/show_snackbar.dart';
 
 class SocketMethods {
   final _socketClient = SocketClient.instance.socket!;
+
+  Socket get socketClient => _socketClient;
 
   // Emitters
   void createRoom(String nickname) {
@@ -21,6 +24,15 @@ class SocketMethods {
     if (nickname.isNotEmpty && roomId.isNotEmpty) {
       _socketClient.emit('joinRoom', {
         'nickname': nickname,
+        'roomId': roomId,
+      });
+    }
+  }
+
+  void tapGrid(int index, String roomId, List<String> displayElements) {
+    if (displayElements[index] == '') {
+      _socketClient.emit('tap', {
+        'index': index,
         'roomId': roomId,
       });
     }
@@ -62,6 +74,15 @@ class SocketMethods {
     _socketClient.on('updateRoom', (room) {
       Provider.of<RoomDataProvider>(context, listen: false)
           .updateRoomData(room);
+    });
+  }
+
+  void tappedListener(BuildContext context) {
+    _socketClient.on('tapped', (data) {
+      RoomDataProvider roomDataProvider =
+          Provider.of<RoomDataProvider>(context, listen: false);
+      roomDataProvider.updateDisplayElements(data['index'], data['choice']);
+      roomDataProvider.updateRoomData(data['room']);
     });
   }
 }

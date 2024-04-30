@@ -30,14 +30,25 @@ class _GameStartScreenState extends State<GameStartScreen> {
     return Scaffold(
       body: roomDataProvider.roomData['isJoin']
           ? const WaitingLobbyScreen()
-          : const SafeArea(
+          : SafeArea(
               child: Padding(
-              padding: EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  ScoreBoardWidget(),
-                  TicTacToeBoardWidget(),
+                  const ScoreBoardWidget(),
+                  const TicTacToeBoardWidget(),
+                  Text(
+                    '${roomDataProvider.roomData['turn']['nickname']}\'s turn',
+                    style: TextStyle(
+                        color: roomDataProvider.roomData['turn']
+                                    ['playerType'] ==
+                                'O'
+                            ? Colors.red
+                            : Colors.blue,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
+                  ),
                 ],
               ),
             )),

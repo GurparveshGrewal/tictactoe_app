@@ -17,8 +17,10 @@ class ScoreBoardWidget extends StatelessWidget {
             children: [
               Text(
                 roomDatProvider.player1.nickname,
-                style:
-                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                    color: Colors.blue,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold),
               ),
               Text(
                 roomDatProvider.player1.points.toInt().toString(),
@@ -34,8 +36,10 @@ class ScoreBoardWidget extends StatelessWidget {
             children: [
               Text(
                 roomDatProvider.player2.nickname,
-                style:
-                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                    color: Colors.red,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold),
               ),
               Text(
                 roomDatProvider.player2.points.toInt().toString(),
