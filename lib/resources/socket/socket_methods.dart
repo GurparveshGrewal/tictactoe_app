@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 import 'package:tictactoe_app/features/game_screen/views/game_screen.dart';
 import 'package:tictactoe_app/provider/room_data_provider.dart';
+import 'package:tictactoe_app/resources/game_methods/game_methods.dart';
 import 'package:tictactoe_app/resources/socket/socket_client.dart';
 import 'package:tictactoe_app/utils/show_snackbar.dart';
 
@@ -83,6 +84,9 @@ class SocketMethods {
           Provider.of<RoomDataProvider>(context, listen: false);
       roomDataProvider.updateDisplayElements(data['index'], data['choice']);
       roomDataProvider.updateRoomData(data['room']);
+
+      // checking the winner
+      GameMethods().checkWinner(context, _socketClient);
     });
   }
 }
