@@ -21,6 +21,8 @@ class _GameStartScreenState extends State<GameStartScreen> {
     super.initState();
     _socketMethods.updatePlayersListener(context);
     _socketMethods.updateRoomListener(context);
+    _socketMethods.pointIncreaseListener(context);
+    _socketMethods.endGameListener(context);
   }
 
   @override
