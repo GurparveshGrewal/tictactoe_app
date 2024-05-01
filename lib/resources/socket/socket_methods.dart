@@ -3,7 +3,9 @@ import 'package:provider/provider.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 import 'package:tictactoe_app/features/game_screen/views/game_screen.dart';
 import 'package:tictactoe_app/provider/room_data_provider.dart';
+import 'package:tictactoe_app/resources/game_methods/game_methods.dart';
 import 'package:tictactoe_app/resources/socket/socket_client.dart';
+import 'package:tictactoe_app/utils/show_game_dialog.dart';
 import 'package:tictactoe_app/utils/show_snackbar.dart';
 
 class SocketMethods {
@@ -83,6 +85,27 @@ class SocketMethods {
           Provider.of<RoomDataProvider>(context, listen: false);
       roomDataProvider.updateDisplayElements(data['index'], data['choice']);
       roomDataProvider.updateRoomData(data['room']);
+
+      // checking the winner
+      GameMethods().checkWinner(context, _socketClient);
     });
+  }
+
+  void pointIncreaseListener(BuildContext context) {
+    _socketClient.on('pointIncrease', (playerData) {
+      final roomDataProvider = Provider.of<RoomDataProvider>(context);
+      if (playerData['socketId'] == roomDataProvider.player1.socketID) {
+        roomDataProvider.updatePlayer1(playerData);
+      } else {
+        roomDataProvider.updatePlayer2(playerData);
+      }
+    });
+  }
+
+  void endGameListener(BuildContext context) {
+    _socketClient.on('endGame', (playerData) {
+      showGameDialog(context, '${playerData['nickname']} has won the game!!');
+    });
+    // Navigator.of(context).popUntil((route) => false);
   }
 }

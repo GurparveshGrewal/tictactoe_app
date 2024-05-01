@@ -5,10 +5,12 @@ class SocketClient {
   static SocketClient? _instance;
 
   SocketClient._internal() {
-    socket = io.io('http://192.168.1.6:3000', <String, dynamic>{
-      'transports': ['websocket'],
-      'autoConnect': false,
-    });
+    socket = io.io(
+        'http://tictcatoe-backend-aws-env.eba-bpkeu83b.ap-south-1.elasticbeanstalk.com/',
+        <String, dynamic>{
+          'transports': ['websocket'],
+          'autoConnect': false,
+        });
     socket!.connect();
   }
 

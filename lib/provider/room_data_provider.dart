@@ -6,12 +6,17 @@ class RoomDataProvider extends ChangeNotifier {
   Player _player1 = Player.empty();
   Player _player2 = Player.empty();
   final List<String> _displayElements = ['', '', '', '', '', '', '', '', ''];
-  int filledBoxes = 0;
+  int _filledBoxes = 0;
 
   Map<String, dynamic> get roomData => _roomData;
   Player get player1 => _player1;
   Player get player2 => _player2;
   List<String> get displayElements => _displayElements;
+  int get filledBoxes => _filledBoxes;
+
+  set filledBoxTo0(int value) {
+    _filledBoxes = value;
+  }
 
   void updateRoomData(Map<String, dynamic> data) {
     _roomData = data;
@@ -30,7 +35,7 @@ class RoomDataProvider extends ChangeNotifier {
 
   void updateDisplayElements(int index, String choice) {
     _displayElements[index] = choice;
-    filledBoxes += 1;
+    _filledBoxes += 1;
     notifyListeners();
   }
 }
